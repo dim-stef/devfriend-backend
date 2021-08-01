@@ -2,20 +2,20 @@ import { Module } from '@nestjs/common';
 import { NestjsQueryGraphQLModule } from '@nestjs-query/query-graphql';
 import { NestjsQueryMongooseModule } from '@nestjs-query/query-mongoose';
 import { MongooseModule } from '@nestjs/mongoose';
-//import { SnippetService } from './snippet.service';
-import { SnippetEntity, SnippetEntitySchema } from './snippet.schema';
-import { Snippet } from './dto/snippet.dto';
+import { TagEntity, TagEntitySchema } from './tag.schema';
+import { Tag } from './dto/tag.dto';
 
 @Module({
   imports: [
     NestjsQueryGraphQLModule.forFeature({
       imports: [
         NestjsQueryMongooseModule.forFeature([
-          {document: SnippetEntity, name: SnippetEntity.name, schema: SnippetEntitySchema}
+          {document: TagEntity, name: TagEntity.name, schema: TagEntitySchema}
         ])
       ],
-      resolvers: [{DTOClass: Snippet, EntityClass: SnippetEntity}]
+      resolvers: [{DTOClass: Tag, EntityClass: TagEntity}]
     })
-  ],
+  ]
 })
-export class SnippetModule {}
+
+export class TagModule {}

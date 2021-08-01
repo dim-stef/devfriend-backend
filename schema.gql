@@ -7,15 +7,526 @@ type User {
   email: String!
 }
 
+type Tag {
+  id: ID!
+  name: String!
+  created: DateTime!
+  snippets(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: SnippetFilter = {}
+
+    """Specify to sort results."""
+    sorting: [SnippetSort!] = []
+  ): TagSnippetsConnection!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input CursorPaging {
+  """Paginate before opaque cursor"""
+  before: ConnectionCursor
+
+  """Paginate after opaque cursor"""
+  after: ConnectionCursor
+
+  """Paginate first"""
+  first: Int
+
+  """Paginate last"""
+  last: Int
+}
+
+"""Cursor for paging through collections"""
+scalar ConnectionCursor
+
+input SnippetFilter {
+  and: [SnippetFilter!]
+  or: [SnippetFilter!]
+  id: IDFilterComparison
+  type: StringFieldComparison
+  language: StringFieldComparison
+  body: StringFieldComparison
+  created: DateFieldComparison
+}
+
+input IDFilterComparison {
+  is: Boolean
+  isNot: Boolean
+  eq: ID
+  neq: ID
+  gt: ID
+  gte: ID
+  lt: ID
+  lte: ID
+  like: ID
+  notLike: ID
+  iLike: ID
+  notILike: ID
+  in: [ID!]
+  notIn: [ID!]
+}
+
+input StringFieldComparison {
+  is: Boolean
+  isNot: Boolean
+  eq: String
+  neq: String
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  like: String
+  notLike: String
+  iLike: String
+  notILike: String
+  in: [String!]
+  notIn: [String!]
+}
+
+input DateFieldComparison {
+  is: Boolean
+  isNot: Boolean
+  eq: DateTime
+  neq: DateTime
+  gt: DateTime
+  gte: DateTime
+  lt: DateTime
+  lte: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  between: DateFieldComparisonBetween
+  notBetween: DateFieldComparisonBetween
+}
+
+input DateFieldComparisonBetween {
+  lower: DateTime!
+  upper: DateTime!
+}
+
+input SnippetSort {
+  field: SnippetSortFields!
+  direction: SortDirection!
+  nulls: SortNulls
+}
+
+enum SnippetSortFields {
+  id
+  type
+  language
+  body
+  created
+}
+
+"""Sort Directions"""
+enum SortDirection {
+  ASC
+  DESC
+}
+
+"""Sort Nulls Options"""
+enum SortNulls {
+  NULLS_FIRST
+  NULLS_LAST
+}
+
+type Snippet {
+  id: ID!
+  type: String!
+  language: String
+  body: String!
+  created: DateTime!
+  tags(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: TagFilter = {}
+
+    """Specify to sort results."""
+    sorting: [TagSort!] = []
+  ): SnippetTagsConnection!
+}
+
+input TagFilter {
+  and: [TagFilter!]
+  or: [TagFilter!]
+  id: IDFilterComparison
+  name: StringFieldComparison
+  created: DateFieldComparison
+}
+
+input TagSort {
+  field: TagSortFields!
+  direction: SortDirection!
+  nulls: SortNulls
+}
+
+enum TagSortFields {
+  id
+  name
+  created
+}
+
+type DeleteManyResponse {
+  """The number of records deleted."""
+  deletedCount: Int!
+}
+
+type SnippetDeleteResponse {
+  id: ID
+  type: String
+  language: String
+  body: String
+  created: DateTime
+}
+
+type UpdateManyResponse {
+  """The number of records updated."""
+  updatedCount: Int!
+}
+
+type SnippetEdge {
+  """The node containing the Snippet"""
+  node: Snippet!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+type PageInfo {
+  """true if paging forward and there are more records."""
+  hasNextPage: Boolean
+
+  """true if paging backwards and there are more records."""
+  hasPreviousPage: Boolean
+
+  """The cursor of the first returned record."""
+  startCursor: ConnectionCursor
+
+  """The cursor of the last returned record."""
+  endCursor: ConnectionCursor
+}
+
+type SnippetConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [SnippetEdge!]!
+}
+
+type SnippetAggregateGroupBy {
+  id: ID
+  type: String
+  language: String
+  body: String
+  created: DateTime
+}
+
+type SnippetCountAggregate {
+  id: Int
+  type: Int
+  language: Int
+  body: Int
+  created: Int
+}
+
+type SnippetMinAggregate {
+  id: ID
+  type: String
+  language: String
+  body: String
+  created: DateTime
+}
+
+type SnippetMaxAggregate {
+  id: ID
+  type: String
+  language: String
+  body: String
+  created: DateTime
+}
+
+type TagEdge {
+  """The node containing the Tag"""
+  node: Tag!
+
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+}
+
+type SnippetTagsConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [TagEdge!]!
+}
+
+type TagDeleteResponse {
+  id: ID
+  name: String
+  created: DateTime
+}
+
+type TagConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [TagEdge!]!
+}
+
+type TagAggregateGroupBy {
+  id: ID
+  name: String
+  created: DateTime
+}
+
+type TagCountAggregate {
+  id: Int
+  name: Int
+  created: Int
+}
+
+type TagMinAggregate {
+  id: ID
+  name: String
+  created: DateTime
+}
+
+type TagMaxAggregate {
+  id: ID
+  name: String
+  created: DateTime
+}
+
+type TagSnippetsConnection {
+  """Paging information"""
+  pageInfo: PageInfo!
+
+  """Array of edges."""
+  edges: [SnippetEdge!]!
+}
+
 type Query {
   users: [User!]!
+  tag(
+    """The id of the record to find."""
+    id: ID!
+  ): Tag
+  tags(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: TagFilter = {}
+
+    """Specify to sort results."""
+    sorting: [TagSort!] = []
+  ): TagConnection!
+  snippet(
+    """The id of the record to find."""
+    id: ID!
+  ): Snippet
+  snippets(
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to filter the records returned."""
+    filter: SnippetFilter = {}
+
+    """Specify to sort results."""
+    sorting: [SnippetSort!] = []
+  ): SnippetConnection!
 }
 
 type Mutation {
   createUser(input: CreateUserInput!): User!
+  createOneTag(input: CreateOneTagInput!): Tag!
+  createManyTags(input: CreateManyTagsInput!): [Tag!]!
+  updateOneTag(input: UpdateOneTagInput!): Tag!
+  updateManyTags(input: UpdateManyTagsInput!): UpdateManyResponse!
+  deleteOneTag(input: DeleteOneTagInput!): TagDeleteResponse!
+  deleteManyTags(input: DeleteManyTagsInput!): DeleteManyResponse!
+  addTagsToSnippet(input: AddTagsToSnippetInput!): Snippet!
+  setTagsOnSnippet(input: SetTagsOnSnippetInput!): Snippet!
+  removeTagsFromSnippet(input: RemoveTagsFromSnippetInput!): Snippet!
+  createOneSnippet(input: CreateOneSnippetInput!): Snippet!
+  createManySnippets(input: CreateManySnippetsInput!): [Snippet!]!
+  updateOneSnippet(input: UpdateOneSnippetInput!): Snippet!
+  updateManySnippets(input: UpdateManySnippetsInput!): UpdateManyResponse!
+  deleteOneSnippet(input: DeleteOneSnippetInput!): SnippetDeleteResponse!
+  deleteManySnippets(input: DeleteManySnippetsInput!): DeleteManyResponse!
 }
 
 input CreateUserInput {
   name: String!
   email: String!
+}
+
+input CreateOneTagInput {
+  """The record to create"""
+  tag: CreateTag!
+}
+
+input CreateTag {
+  id: ID
+  name: String
+  created: DateTime
+}
+
+input CreateManyTagsInput {
+  """Array of records to create"""
+  tags: [CreateTag!]!
+}
+
+input UpdateOneTagInput {
+  """The id of the record to update"""
+  id: ID!
+
+  """The update to apply."""
+  update: UpdateTag!
+}
+
+input UpdateTag {
+  id: ID
+  name: String
+  created: DateTime
+}
+
+input UpdateManyTagsInput {
+  """Filter used to find fields to update"""
+  filter: TagUpdateFilter!
+
+  """The update to apply to all records found using the filter"""
+  update: UpdateTag!
+}
+
+input TagUpdateFilter {
+  and: [TagUpdateFilter!]
+  or: [TagUpdateFilter!]
+  id: IDFilterComparison
+  name: StringFieldComparison
+  created: DateFieldComparison
+}
+
+input DeleteOneTagInput {
+  """The id of the record to delete."""
+  id: ID!
+}
+
+input DeleteManyTagsInput {
+  """Filter to find records to delete"""
+  filter: TagDeleteFilter!
+}
+
+input TagDeleteFilter {
+  and: [TagDeleteFilter!]
+  or: [TagDeleteFilter!]
+  id: IDFilterComparison
+  name: StringFieldComparison
+  created: DateFieldComparison
+}
+
+input AddTagsToSnippetInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
+
+input SetTagsOnSnippetInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
+
+input RemoveTagsFromSnippetInput {
+  """The id of the record."""
+  id: ID!
+
+  """The ids of the relations."""
+  relationIds: [ID!]!
+}
+
+input CreateOneSnippetInput {
+  """The record to create"""
+  snippet: CreateSnippet!
+}
+
+input CreateSnippet {
+  id: ID
+  type: String
+  language: String
+  body: String
+  created: DateTime
+}
+
+input CreateManySnippetsInput {
+  """Array of records to create"""
+  snippets: [CreateSnippet!]!
+}
+
+input UpdateOneSnippetInput {
+  """The id of the record to update"""
+  id: ID!
+
+  """The update to apply."""
+  update: UpdateSnippet!
+}
+
+input UpdateSnippet {
+  id: ID
+  type: String
+  language: String
+  body: String
+  created: DateTime
+}
+
+input UpdateManySnippetsInput {
+  """Filter used to find fields to update"""
+  filter: SnippetUpdateFilter!
+
+  """The update to apply to all records found using the filter"""
+  update: UpdateSnippet!
+}
+
+input SnippetUpdateFilter {
+  and: [SnippetUpdateFilter!]
+  or: [SnippetUpdateFilter!]
+  id: IDFilterComparison
+  type: StringFieldComparison
+  language: StringFieldComparison
+  body: StringFieldComparison
+  created: DateFieldComparison
+}
+
+input DeleteOneSnippetInput {
+  """The id of the record to delete."""
+  id: ID!
+}
+
+input DeleteManySnippetsInput {
+  """Filter to find records to delete"""
+  filter: SnippetDeleteFilter!
+}
+
+input SnippetDeleteFilter {
+  and: [SnippetDeleteFilter!]
+  or: [SnippetDeleteFilter!]
+  id: IDFilterComparison
+  type: StringFieldComparison
+  language: StringFieldComparison
+  body: StringFieldComparison
+  created: DateFieldComparison
 }

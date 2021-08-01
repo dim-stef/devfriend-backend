@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
@@ -9,19 +9,25 @@ import { databaseProviders } from './database/database.providers';
 import { UserService } from './user/user.service';
 import { UserResolver } from './user/user.resolver';
 import { UserModule } from './user/user.module';
+import { SnippetModule } from './snippet/snippet.module';
 import { userProviders } from './user/user.providers';
-import configuration from './config/configuration';
-import { MONO_DB_CONNECTION_STRING } from './constants';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
     GraphQLModule.forRoot({ autoSchemaFile: 'schema.gql' }),
-    ConfigModule.forRoot({
-      load: [configuration],
-    }),
+    ConfigModule.forRoot(),
     //DatabaseModule,
-    MongooseModule.forRoot(MONO_DB_CONNECTION_STRING),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get('MONO_DB_CONNECTION_STRING'),
+      }),
+      inject: [ConfigService],
+    }),
     UserModule,
+    TagModule,
+    SnippetModule,
   ],
   controllers: [AppController],
   providers: [
