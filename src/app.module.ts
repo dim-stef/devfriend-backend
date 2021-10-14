@@ -12,6 +12,7 @@ import { UserModule } from './user/user.module';
 import { SnippetModule } from './snippet/snippet.module';
 import { userProviders } from './user/user.providers';
 import { TagModule } from './tag/tag.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TagModule } from './tag/tag.module';
     UserModule,
     TagModule,
     SnippetModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
