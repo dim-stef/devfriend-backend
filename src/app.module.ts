@@ -29,7 +29,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     TagModule,
     SnippetModule,
-    AuthModule,
+    // AuthModule,
   ],
   controllers: [AppController],
   providers: [
