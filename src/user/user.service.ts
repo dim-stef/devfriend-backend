@@ -18,6 +18,15 @@ export class UserService {
     return this.userModel.findOne(query).lean();
   }
 
+  async findOrCreate(query: FilterQuery<User>): Promise<User> {
+    let user = this.findOne(query)
+    if(user){
+      return user;
+    }else{
+      return this.create(query)
+    }
+  }
+
   async find(): Promise<User[]> {
     return this.userModel.find().lean();
   }
