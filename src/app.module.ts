@@ -14,6 +14,7 @@ import { userProviders } from './user/user.providers';
 import { TagModule } from './tag/tag.module';
 import { AuthModule } from './auth/auth.module';
 import { GithubStrategy } from './auth/github.strategy';
+import { JwtAuthModule } from './auth/jwt-auth.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { GithubStrategy } from './auth/github.strategy';
     UserModule,
     TagModule,
     SnippetModule,
+    JwtAuthModule,
     // AuthModule,
   ],
   controllers: [AppController],
