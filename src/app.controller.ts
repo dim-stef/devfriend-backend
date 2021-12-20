@@ -18,13 +18,13 @@ export class AppController {
     }
   }
 
-  @Get('auth/github/callback')
-  @UseGuards(AuthGuard('github'))
-  githubAuthRedirect(@Req() req){
-    this.logger.log('Doing something...');
+  // @Get('auth/github/callback')
+  // @UseGuards(AuthGuard('github'))
+  // githubAuthRedirect(@Req() req){
+  //   this.logger.log('Doing something...');
 
-    return this.appService.githubLogin(req);
-  }
+  //   return this.appService.githubLogin(req);
+  // }
 
   @Get()
   getHello(): string {

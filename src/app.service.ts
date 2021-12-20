@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-
   githubLogin(req){
     if(!req.user){
       return 'Invalid user'

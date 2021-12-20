@@ -4,13 +4,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseModule } from './database/database.module';
-import { databaseProviders } from './database/database.providers';
-import { UserService } from './user/user.service';
-import { UserResolver } from './user/user.resolver';
 import { UserModule } from './user/user.module';
 import { SnippetModule } from './snippet/snippet.module';
 import { userProviders } from './user/user.providers';
+import { GithubOauthController } from './auth/github.controller';
 import { TagModule } from './tag/tag.module';
 import { AuthModule } from './auth/auth.module';
 import { GithubStrategy } from './auth/github.strategy';
@@ -34,7 +31,7 @@ import { JwtAuthModule } from './auth/jwt-auth.module';
     JwtAuthModule,
     // AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, GithubOauthController],
   providers: [
     AppService,
     GithubStrategy,
